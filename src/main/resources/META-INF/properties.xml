@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<configuration>
+  <!-- 
+  <property>
+    <name>dt.application.{appName}.operator.{opName}.prop.{propName}</name>
+    <value>some-default-value (if value is not specified, it is required from the user or custom config when launching)</value>
+  </property>
+  -->
+  <!-- memory assigned to app master
+  <property>
+    <name>dt.attr.MASTER_MEMORY_MB</name>
+    <value>1024</value>
+  </property>
+  -->
+  <property>
+    <name>dt.application.MyFirstApplication.operator.randomGenerator.prop.numTuples</name>
+    <value>1000</value>
+  </property>
+  <property>
+    <name>dt.application.MyFirstApplication.operator.console.prop.stringFormat</name>
+    <value>hello world: %s</value>
+  </property>
+
+  <property>
+	<name>dt.operator.KafkaInputOperator.prop.clusters</name>
+	<value>localhost:9092</value>
+	</property> 
+  <property>
+	<name>dt.operator.KafkaInputOperator.prop.topics</name>
+	<value>transactions</value>
+  </property>
+  <property>
+	<name>dt.operator.KafkaInputOperator.prop.initialOffset</name>
+	<value>LATEST</value>
+  </property>
+  <property>
+	<name>dt.operator.HDFSFileOutputOperator.prop.filePath</name>
+	<value>/tmp</value>
+  </property>
+  <property>
+		<name>dt.operator.HDFSFileOutputOperator.prop.outputFileName</name>
+		<value>output.txt</value>
+  </property>
+
+
+    <property>
+        <name>dt.operator.CSVParser.prop.schema</name>
+        <value>{
+            "separator": "|",
+            "quoteChar": "\"",
+            "fields": [
+            {
+            "name": "accountNumber",
+            "type": "Integer"
+            },
+            {
+            "name": "name",
+            "type": "String"
+            },
+            {
+            "name": "amount",
+            "type": "Integer"
+            }
+            ]
+            }
+        </value>
+    </property>
+    <property>
+        <name>dt.operator.CSVFormatter.prop.schema</name>
+        <value>{
+            "separator": "|",
+            "quoteChar": "\"",
+            "lineDelimiter": "",
+            "fields": [
+            {
+            "name": "accountNumber",
+            "type": "Integer"
+            },
+            {
+            "name": "name",
+            "type": "String"
+            },
+            {
+            "name": "amount",
+            "type": "Integer"
+            }
+            ]
+            }
+        </value>
+    </property>
+    <property>
+        <name>dt.operator.CSVParser.port.out.attr.TUPLE_CLASS</name>
+        <value>com.example.kafkatohdfs.PojoEvent</value>
+    </property>
+    <property>
+        <name>dt.operator.FilterOperator.port.input.attr.TUPLE_CLASS</name>
+        <value>com.example.kafkatohdfs.PojoEvent</value>
+    </property>
+    <property>
+        <name>dt.operator.CSVFormatter.port.in.attr.TUPLE_CLASS</name>
+        <value>com.example.kafkatohdfs.PojoEvent</value>
+    </property>
+
+    <property>
+    <name>dt.operator.DedupOperator.port.input.attr.TUPLE_CLASS</name>
+    <value>com.example.kafkatohdfs.PojoEvent</value>
+    </property>
+
+
+
+    <property>
+        <name>dt.operator.DedupOperator.prop.keyExpr</name>
+        <value>accountNumber</value>
+    </property>
+    <property>
+        <name>dt.operator.FilterOperator.prop.condition</name>
+        <value>({$}.getAmount() >= 20000)</value>
+    </property>
+
+    <property>
+        <name>dt.operator.DedupOperator.attr.PARTITIONER</name>
+        <value>com.datatorrent.common.partitioner.StatelessPartitioner:2</value>
+    </property>
+
+
+</configuration>
+
